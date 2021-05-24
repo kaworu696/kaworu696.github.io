@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[classdef AppPrac1 < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        UIFigure           matlab.ui.Figure
+        FtEditFieldLabel   matlab.ui.control.Label
+        funcion            matlab.ui.control.EditField
+        GraficarButton     matlab.ui.control.Button
+        x_min              matlab.ui.control.NumericEditField
+        x_max              matlab.ui.control.NumericEditField
+        IntervalodetLabel  matlab.ui.control.Label
+        FuncinagraficarnotacindeMatLabLabel  matlab.ui.control.Label
+        tLabel             matlab.ui.control.Label
+        RealicelastransformacionesLabel  matlab.ui.control.Label
+        GraficadordesealestiempocontinuoLabel  matlab.ui.control.Label
+        EditField          matlab.ui.control.EditField
+        EditField_2        matlab.ui.control.EditField
+        PulseEditField     matlab.ui.control.EditField
+        THorizontalLabel   matlab.ui.control.Label
+        horizontal         matlab.ui.control.Slider
+        EHorizontalLabel   matlab.ui.control.Label
+        esc_hor            matlab.ui.control.Slider
+        EVerticalLabel     matlab.ui.control.Label
+        esc_ver            matlab.ui.control.Slider
+        vertical           matlab.ui.control.Slider
+        TVerticalLabel     matlab.ui.control.Label
+        GraficadordesealestiempocontinuoLabel_2  matlab.ui.control.Label
+        UIAxes             matlab.ui.control.UIAxes
+    end
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Button pushed function: GraficarButton
+        function GraficarButtonPushed(app, event)
+             %-Intervalos de la gráfica
+            a=app.horizontal.Value;
+            b=app.vertical.Value;
+            c=app.esc_hor.Value;
+            d=app.esc_ver.Value;
+            x1=app.x_min.Value;
+            x2=app.x_max.Value;            
+          
+           
+            syms t;                       
+             
+             t=(x1):.01:(x2);
+     
+            
+            %-Funcion
+            
+           f = eval(app.funcion.Value,'String');
+            
+            %-Graficar            
+                                                    
+          plot(app.UIAxes,(1/c)*(t-a),d*(f+b));
+        end
+
+        % Value changed function: funcion
+        function funcionValueChanged(app, event)
+           %-value = app.funcion.Value;
+            
+        end
+    end
+
+    % Component initialization
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create UIFigure and hide until all components are created
+            app.UIFigure = uifigure('Visible', 'off');
+            app.UIFigure.Color = [0.7176 0.2745 1];
+            app.UIFigure.Position = [100 100 711 667];
+            app.UIFigure.Name = 'MATLAB App';
+
+            % Create FtEditFieldLabel
+            app.FtEditFieldLabel = uilabel(app.UIFigure);
+            app.FtEditFieldLabel.BackgroundColor = [0 1 1];
+            app.FtEditFieldLabel.HorizontalAlignment = 'center';
+            app.FtEditFieldLabel.FontSize = 16;
+            app.FtEditFieldLabel.FontWeight = 'bold';
+            app.FtEditFieldLabel.FontAngle = 'italic';
+            app.FtEditFieldLabel.FontColor = [0.149 0.149 0.149];
+            app.FtEditFieldLabel.Position = [75 535 31 22];
+            app.FtEditFieldLabel.Text = 'F(t)';
+
+            % Create funcion
+            app.funcion = uieditfield(app.UIFigure, 'text');
+            app.funcion.ValueChangedFcn = createCallbackFcn(app, @funcionValueChanged, true);
+            app.funcion.HorizontalAlignment = 'center';
+            app.funcion.Position = [118 534 162 25];
+
+            % Create GraficarButton
+            app.GraficarButton = uibutton(app.UIFigure, 'push');
+            app.GraficarButton.ButtonPushedFcn = createCallbackFcn(app, @GraficarButtonPushed, true);
+            app.GraficarButton.BackgroundColor = [0.0588 1 1];
+            app.GraficarButton.FontWeight = 'bold';
+            app.GraficarButton.Position = [362 322 100 24];
+            app.GraficarButton.Text = 'Graficar';
+
+            % Create x_min
+            app.x_min = uieditfield(app.UIFigure, 'numeric');
+            app.x_min.HorizontalAlignment = 'center';
+            app.x_min.Position = [451 535 39 22];
+
+            % Create x_max
+            app.x_max = uieditfield(app.UIFigure, 'numeric');
+            app.x_max.HorizontalAlignment = 'center';
+            app.x_max.Position = [570 537 38 22];
+
+            % Create IntervalodetLabel
+            app.IntervalodetLabel = uilabel(app.UIFigure);
+            app.IntervalodetLabel.BackgroundColor = [0.302 0.7451 0.9333];
+            app.IntervalodetLabel.HorizontalAlignment = 'center';
+            app.IntervalodetLabel.FontSize = 16;
+            app.IntervalodetLabel.FontWeight = 'bold';
+            app.IntervalodetLabel.Position = [455 574 157 23];
+            app.IntervalodetLabel.Text = 'Intervalo de t';
+
+            % Create FuncinagraficarnotacindeMatLabLabel
+            app.FuncinagraficarnotacindeMatLabLabel = uilabel(app.UIFigure);
+            app.FuncinagraficarnotacindeMatLabLabel.BackgroundColor = [0.302 0.7451 0.9333];
+            app.FuncinagraficarnotacindeMatLabLabel.HorizontalAlignment = 'center';
+            app.FuncinagraficarnotacindeMatLabLabel.WordWrap = 'on';
+            app.FuncinagraficarnotacindeMatLabLabel.FontSize = 16;
+            app.FuncinagraficarnotacindeMatLabLabel.FontWeight = 'bold';
+            app.FuncinagraficarnotacindeMatLabLabel.Position = [75 562 197 46];
+            app.FuncinagraficarnotacindeMatLabLabel.Text = {'Función a graficar'; '(notación de MatLab)'};
+
+            % Create tLabel
+            app.tLabel = uilabel(app.UIFigure);
+            app.tLabel.BackgroundColor = [0.0588 1 1];
+            app.tLabel.FontSize = 18;
+            app.tLabel.FontWeight = 'bold';
+            app.tLabel.FontAngle = 'italic';
+            app.tLabel.Position = [508 534 43 29];
+            app.tLabel.Text = '< t <';
+
+            % Create RealicelastransformacionesLabel
+            app.RealicelastransformacionesLabel = uilabel(app.UIFigure);
+            app.RealicelastransformacionesLabel.BackgroundColor = [0.302 0.7451 0.9333];
+            app.RealicelastransformacionesLabel.HorizontalAlignment = 'center';
+            app.RealicelastransformacionesLabel.WordWrap = 'on';
+            app.RealicelastransformacionesLabel.FontSize = 16;
+            app.RealicelastransformacionesLabel.FontWeight = 'bold';
+            app.RealicelastransformacionesLabel.Position = [240 497 259 26];
+            app.RealicelastransformacionesLabel.Text = 'Realice las transformaciones';
+
+            % Create GraficadordesealestiempocontinuoLabel
+            app.GraficadordesealestiempocontinuoLabel = uilabel(app.UIFigure);
+            app.GraficadordesealestiempocontinuoLabel.BackgroundColor = [0.0588 1 1];
+            app.GraficadordesealestiempocontinuoLabel.HorizontalAlignment = 'center';
+            app.GraficadordesealestiempocontinuoLabel.FontSize = 18;
+            app.GraficadordesealestiempocontinuoLabel.FontWeight = 'bold';
+            app.GraficadordesealestiempocontinuoLabel.Position = [171 730 370 44];
+            app.GraficadordesealestiempocontinuoLabel.Text = {'Graficador de señales'; 'tiempo continuo'};
+
+            % Create EditField
+            app.EditField = uieditfield(app.UIFigure, 'text');
+            app.EditField.HorizontalAlignment = 'center';
+            app.EditField.FontWeight = 'bold';
+            app.EditField.BackgroundColor = [1 1 0];
+            app.EditField.Position = [154 468 84 22];
+            app.EditField.Value = 'Traslación';
+
+            % Create EditField_2
+            app.EditField_2 = uieditfield(app.UIFigure, 'text');
+            app.EditField_2.HorizontalAlignment = 'center';
+            app.EditField_2.FontWeight = 'bold';
+            app.EditField_2.BackgroundColor = [1 1 0];
+            app.EditField_2.Position = [502 468 96 22];
+            app.EditField_2.Value = 'Escalamiento';
+
+            % Create PulseEditField
+            app.PulseEditField = uieditfield(app.UIFigure, 'text');
+            app.PulseEditField.FontAngle = 'italic';
+            app.PulseEditField.BackgroundColor = [0.7176 0.2745 1];
+            app.PulseEditField.Position = [271 323 67 22];
+            app.PulseEditField.Value = 'Presione =>';
+
+            % Create THorizontalLabel
+            app.THorizontalLabel = uilabel(app.UIFigure);
+            app.THorizontalLabel.BackgroundColor = [1 1 0];
+            app.THorizontalLabel.HorizontalAlignment = 'center';
+            app.THorizontalLabel.FontWeight = 'bold';
+            app.THorizontalLabel.FontAngle = 'italic';
+            app.THorizontalLabel.Position = [39 429 75 22];
+            app.THorizontalLabel.Text = 'T. Horizontal';
+
+            % Create horizontal
+            app.horizontal = uislider(app.UIFigure);
+            app.horizontal.Limits = [-10 10];
+            app.horizontal.MajorTicks = [-10 -8 -6 -4 -2 0 2 4 6 8 10];
+            app.horizontal.MinorTicks = [-10 -9.5 -9 -8.5 -8 -7.5 -7 -6.5 -6 -5.5 -5 -4.5 -4 -3.5 -3 -2.5 -2 -1.5 -1 -0.5 0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10];
+            app.horizontal.Position = [118 450 210 3];
+
+            % Create EHorizontalLabel
+            app.EHorizontalLabel = uilabel(app.UIFigure);
+            app.EHorizontalLabel.BackgroundColor = [1 1 0];
+            app.EHorizontalLabel.HorizontalAlignment = 'center';
+            app.EHorizontalLabel.FontWeight = 'bold';
+            app.EHorizontalLabel.FontAngle = 'italic';
+            app.EHorizontalLabel.Position = [382 429 78 22];
+            app.EHorizontalLabel.Text = 'E. Horizontal';
+
+            % Create esc_hor
+            app.esc_hor = uislider(app.UIFigure);
+            app.esc_hor.Limits = [-10 10];
+            app.esc_hor.Position = [468 451 210 3];
+            app.esc_hor.Value = 1;
+
+            % Create EVerticalLabel
+            app.EVerticalLabel = uilabel(app.UIFigure);
+            app.EVerticalLabel.BackgroundColor = [1 1 0];
+            app.EVerticalLabel.HorizontalAlignment = 'center';
+            app.EVerticalLabel.FontWeight = 'bold';
+            app.EVerticalLabel.FontAngle = 'italic';
+            app.EVerticalLabel.Position = [382 385 74 22];
+            app.EVerticalLabel.Text = 'E. Vertical';
+
+            % Create esc_ver
+            app.esc_ver = uislider(app.UIFigure);
+            app.esc_ver.Limits = [-10 10];
+            app.esc_ver.Position = [461 394 210 3];
+            app.esc_ver.Value = 1;
+
+            % Create vertical
+            app.vertical = uislider(app.UIFigure);
+            app.vertical.Limits = [-10 10];
+            app.vertical.Position = [118 394 210 3];
+
+            % Create TVerticalLabel
+            app.TVerticalLabel = uilabel(app.UIFigure);
+            app.TVerticalLabel.BackgroundColor = [1 1 0];
+            app.TVerticalLabel.HorizontalAlignment = 'center';
+            app.TVerticalLabel.FontWeight = 'bold';
+            app.TVerticalLabel.FontAngle = 'italic';
+            app.TVerticalLabel.Position = [39 385 74 22];
+            app.TVerticalLabel.Text = 'T. Vertical';
+
+            % Create GraficadordesealestiempocontinuoLabel_2
+            app.GraficadordesealestiempocontinuoLabel_2 = uilabel(app.UIFigure);
+            app.GraficadordesealestiempocontinuoLabel_2.BackgroundColor = [0.0588 1 1];
+            app.GraficadordesealestiempocontinuoLabel_2.HorizontalAlignment = 'center';
+            app.GraficadordesealestiempocontinuoLabel_2.FontSize = 18;
+            app.GraficadordesealestiempocontinuoLabel_2.FontWeight = 'bold';
+            app.GraficadordesealestiempocontinuoLabel_2.Position = [172 615 370 44];
+            app.GraficadordesealestiempocontinuoLabel_2.Text = {'Graficador de señales'; 'tiempo continuo'};
+
+            % Create UIAxes
+            app.UIAxes = uiaxes(app.UIFigure);
+            xlabel(app.UIAxes, 'X')
+            ylabel(app.UIAxes, 'Y')
+            zlabel(app.UIAxes, 'Z')
+            app.UIAxes.PlotBoxAspectRatio = [1.93129770992366 1 1];
+            app.UIAxes.GridLineStyle = '--';
+            app.UIAxes.YAxisLocation = 'origin';
+            app.UIAxes.XGrid = 'on';
+            app.UIAxes.YGrid = 'on';
+            app.UIAxes.MinorGridColor = [0.1 0.1 0.1];
+            app.UIAxes.GridAlpha = 0.15;
+            app.UIAxes.Position = [118 1 504 363];
+
+            % Show the figure after all components are created
+            app.UIFigure.Visible = 'on';
+        end
+    end
+
+    % App creation and deletion
+    methods (Access = public)
+
+        % Construct app
+        function app = AppPrac1
+
+            % Create UIFigure and components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.UIFigure)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.UIFigure)
+        end
+    end
+end]]></w:t></w:r></w:p></w:body></w:document>
